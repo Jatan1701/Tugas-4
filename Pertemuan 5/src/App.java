@@ -68,14 +68,16 @@ public class App {
                 long tf=0;
                 System.out.print ("Masukkan Nomor Rekening Anda \t:\t");
                 NoRek3 = input.next();
+                int i=0;
                 for (Nasabah nasabah3 : nasabah) 
-                {
+                {i+=1;
                     if(nasabah3.getNoRek().equals(NoRek3))
                     {
+                        System.out.println("Rekening berhasil Terdaftar "+i);
                         System.out.println("Nomor rekening Atas Nama " + nasabah3.getNamansb());
-                        System.out.print ("Masukkan Nomor Rekening yang ingin di \t:\t");
+                        System.out.print ("Masukkan Nomor Rekening yang ingin di transfer \t:\t");
                         NoRek4 = input.next();
-                        int i=0;
+                       
                         for (Nasabah nasabah4 : nasabah) 
                         {
                             if(nasabah4.getNoRek().equals(NoRek4))
@@ -84,27 +86,31 @@ public class App {
                                 System.out.print ("Jumlah Uang (IDR)\t:\t");
                                 tf = input.nextLong();
 
-                                if(tf<nasabah3.getSaldo() & (nasabah3.getSaldo())<=0)
+                                if(tf<nasabah3.getSaldo() & (nasabah3.getSaldo())>=0)
                                 {
                                     Nasabah tmpnsb2 = nasabah3;
-                                    tmpnsb2.setSaldo(tmpnsb2.getSaldo() - tf);
                                     Nasabah tmpnsb3 = nasabah4;
-                                    tmpnsb3.setSaldo(tmpnsb3.getSaldo() + tf);
+                                    tmpnsb2.setSaldo(tmpnsb2.getSaldo()- tf);
                                     nasabah.set(i, tmpnsb2);
+                                    tmpnsb3.setSaldo(tmpnsb3.getSaldo() + tf);
+                                    nasabah.set(i, tmpnsb3);
                                     logMutasi.add("Transfer " + tf + " ke rekening " + tmpnsb3.getNoRek() + " AN " + tmpnsb3.getNamansb());
-                                    System.out.println("\n<TRANSAKSI BERHASIL>");
+                                    System.out.println("\n<Transaksi Berhasil>");
                                     System.out.println("Saldo Tersisah " + tmpnsb2.getSaldo());
+                                    break;
                                 }
                                 else
                                 {
                                     System.out.println("\n<TRANSAKSI GAGAL>");
                                     System.out.println("Saldo tidak mencukupi...");  
                                 }
-                            }
+                            }i++;
                         }
-                        i++;
+                        break;
                     }
-                    else { System.out.println("Rekening Belum Terdaftar"); break;}
+                    else if (!nasabah3.getNoRek().equals(NoRek3)){
+                        System.out.println("Rekening Tidak Terdaftar"+i);
+                    }
                 }
 
             }
@@ -157,7 +163,7 @@ public class App {
     }
     
     public static void cetakNamaNasabah(ArrayList<Nasabah> nasabah){
-        System.out.println("No.Rekening\tNama\t\tSaldo\tNo.kartu\tPIN\tTgl. Daftar");
+        System.out.println("No.Rekening\tNama\t\tSaldo\tPIN\t\tTgl. Daftar");
         System.out.println("----------------------------------------------------");
         for (Nasabah nsbh : nasabah){
             System.out.println(nsbh);
